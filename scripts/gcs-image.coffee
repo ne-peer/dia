@@ -2,7 +2,8 @@
 #   A way to interact with the Google Images API.
 #
 # Configuration:
-#  ソース内部の{GoogleApiKey}と{CustomSearchID}を設定する
+#   HUBOT_GOOGLE_CSE_KEY - Your Google developer API key
+#   HUBOT_GOOGLE_CSE_ID - The ID of your Custom Search Engine
 #
 # Original source:
 #   https://github.com/hubot-scripts/hubot-google-images
@@ -52,10 +53,10 @@ module.exports = (robot) ->
 imageMe = (msg, query, animated, faces, cb) ->
   cb = animated if typeof animated == 'function'
   cb = faces if typeof faces == 'function'
-  googleCseId = '{CustomSearchID}';
+  googleCseId = process.env.HUBOT_GOOGLE_CSE_ID
   if googleCseId
     # Using Google Custom Search API
-    googleApiKey = '{GoogleApiKey}';
+    googleApiKey = process.env.HUBOT_GOOGLE_CSE_KEY
     if !googleApiKey
       msg.robot.logger.error "Missing environment variable HUBOT_GOOGLE_CSE_KEY"
       msg.send "Missing server environment variable HUBOT_GOOGLE_CSE_KEY."
