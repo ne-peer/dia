@@ -12,10 +12,10 @@
 
 module.exports = (robot) ->
   resType = "respond"
-  trigger = /(.+)の動画を(みせて|見せて)/i
+  trigger = /(.+)の動画/i
   if process.env.HUBOT_YOUTUBE_HEAR == 'true'
     resType = "hear"
-    trigger = /(.+)の動画を(みせて|見せて)/i  
+    trigger = /(.+)の動画/i  
 
   robot[resType] trigger, (msg) ->
     unless process.env.HUBOT_GOOGLE_CSE_ID
