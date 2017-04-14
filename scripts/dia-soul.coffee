@@ -9,5 +9,5 @@ module.exports = (robot) ->
   robot.hear /ただいま/i, (msg) ->
     msg.send msg.random ["おかえりなさい。いまお茶を淹れますわ。"]
 
-  robot.hear /だいや|ダイヤ|dia/i, (msg) ->
+  robot.hear /だいや|ダイヤ/i, (msg) ->
     msg.send msg.random ['なんでしょうか？', '呼びましたか？', '何か聞こえた気がしますわ']

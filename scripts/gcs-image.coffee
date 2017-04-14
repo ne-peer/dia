@@ -12,7 +12,7 @@ module.exports = (robot) ->
 
   robot.respond /(.+)を(みせて|見せて)/i, (msg) ->
     imageMe msg, msg.match[1], (url) ->
-      msg.send "これですわ！" , url
+      msg.send "これですわ！\n" + url
 
   # 未使用
   # 
