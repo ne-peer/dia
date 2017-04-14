@@ -50,4 +50,4 @@ module.exports = (robot) ->
         unless videos? && videos.length > 0
           return msg.send "No video results for \"#{query}\""
         video = msg.random videos
-        msg.send "https://www.youtube.com/watch?v=#{video.id.videoId}"
+        msg.send "これですわね！\n" + "https://www.youtube.com/watch?v=#{video.id.videoId}"
