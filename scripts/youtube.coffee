@@ -5,7 +5,6 @@
 #   HUBOT_YOUTUBE_API_KEY - Obtained from https://console.developers.google.com
 #   HUBOT_YOUTUBE_DETERMINISTIC_RESULTS - Optional boolean flag to only fetch
 #     the top result from the YouTube search
-#   HUBOT_YOUTUBE_HEAR - Optional boolean flag to globally hear from channels
 #
 # Original source:
 #   https://github.com/hubot-scripts/hubot-youtube
@@ -13,14 +12,11 @@
 module.exports = (robot) ->
   resType = "respond"
   trigger = /(.+)の動画/i
-  if process.env.HUBOT_YOUTUBE_HEAR == 'true'
-    resType = "hear"
-    trigger = /(.+)の動画/i  
 
   robot[resType] trigger, (msg) ->
-    unless process.env.HUBOT_GOOGLE_CSE_ID
-      robot.logger.error 'HUBOT_YOUTUBE_API_KEY is not set.'
-      return msg.send "You must configure the HUBOT_YOUTUBE_API_KEY environment variable"
+    unless process.env.HUBOT_GOOGLE_CSE_KEY
+      robot.logger.error 'HUBOT_GOOGLE_CSE_KEY is not set.'
+      return msg.send "You must configure the HUBOT_GOOGLE_CSE_KEY environment variable"
     query = msg.match[1]
     maxResults = if process.env.HUBOT_YOUTUBE_DETERMINISTIC_RESULTS == 'true' then 1 else 15
     robot.logger.debug "Query: #{query}\n Max Results: #{maxResults}"
@@ -31,7 +27,7 @@ module.exports = (robot) ->
         type: 'video'
         maxResults: maxResults
         q: query
-        key: process.env.HUBOT_GOOGLE_CSE_ID
+        key: process.env.HUBOT_GOOGLE_CSE_KEY
       })
       .get() (err, res, body) ->
         robot.logger.debug body
