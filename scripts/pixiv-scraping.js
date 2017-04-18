@@ -15,8 +15,14 @@ module.exports = robot => {
 
         // Googleで「node.js」について検索する。
         client.fetch('http://www.google.com/search', { q: query }, function (err, $, res) {
-            const content = $(SELECTOR).text();
-            msg.send(content);
+
+            if (!err) {
+                const content = $(SELECTOR).text();
+                msg.send(content);
+            } else {
+                msg.send('失敗しましたわ･･･。');
+            }
+
         });
     });
 };
