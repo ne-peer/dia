@@ -16,20 +16,19 @@ module.exports = robot => {
     robot.respond(/(.+)って(誰|だれ|だあれ|何|なに)/i, msg => {
         const query = msg.match[1];
 
-        const requestUri = encodeURI('http://dic.pixiv.net/a/' + query);
-        console.log(requestUri);
+        const rawUri = 'http://dic.pixiv.net/a/' + query;
+        const requestUri = encodeURI(rawUri);
 
         // ピクシブ百科事典で検索する
         client.fetch(requestUri, function (err, $, res) {
             if (!err) {
                 const summary = $(SELECTOR_SUMMARY).text();
                 const description = $(SELECTOR_DESCRIPTION).text();
-                msg.send(summary + '\n' + description + '\n\nですわ！');
+                msg.send(rawUri + '\n' + summary + '\n' + description + '\n\nですわ！');
             } else {
                 console.log(err);
                 msg.send('失敗しましたわ･･･。');
             }
-
         });
     });
 };
