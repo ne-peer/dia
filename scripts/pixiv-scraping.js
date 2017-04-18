@@ -13,7 +13,7 @@ const SELECTOR_SUMMARY = '#content div.summary';
 const SELECTOR_DESCRIPTION = '#content #h2_0+p';
 
 module.exports = robot => {
-    robot.respond(/(.+)って(何|なに)/i, msg => {
+    robot.respond(/(.+)って(誰|だれ|だあれ|何|なに)/i, msg => {
         const query = msg.match[1];
 
         const requestUri = encodeURI('http://dic.pixiv.net/a/' + query);
