@@ -1,15 +1,22 @@
+/**
+ * Description:
+ *   スクレイピング
+ * 
+ * Commands:
+ *   dia (free word)の<絵|イラスト>
+ */
 var client = require('cheerio-httpcli');
 
-// Googleで「node.js」について検索する。
-client.fetch('http://www.google.com/search', { q: 'node.js' }, function (err, $, res) {
-  // レスポンスヘッダを参照
-  console.log(res.headers);
+const SELECTOR = 'title';
 
-  // HTMLタイトルを表示
-  console.log($('title').text());
+module.exports = robot => {
+    robot.respond(/(.+)の(絵|イラスト)/i, msg => {
+        const query = msg.match[1];
 
-  // リンク一覧を表示
-  $('a').each(function (idx) {
-    console.log($(this).attr('href'));
-  });
-});
+        // Googleで「node.js」について検索する。
+        client.fetch('http://www.google.com/search', { q: query }, function (err, $, res) {
+            const content = $(SELECTOR).text();
+            msg.send(content);
+        });
+    });
+};
