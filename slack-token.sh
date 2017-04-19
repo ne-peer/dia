@@ -8,4 +8,6 @@ export PORT=80
 export HUBOT_GOOGLE_CSE_ID={GoogleApiKey}
 export HUBOT_GOOGLE_CSE_KEY={GoogleCustomSearchKey}
 
+export HUBOT_TUMBLR_CONSUMER_KEY={TumblrConsumerKey}
+
 nohup ./bin/hubot --adapter slack &

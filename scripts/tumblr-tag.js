@@ -14,7 +14,7 @@ const limit = 5;
 module.exports = robot => {
     robot.respond(/(.+)の(絵|イラスト)/i, msg => {
         const query = encodeURI(msg.match[1]);
-        const apiKey = "O0zjjGR8YTA0VEXSr9TY2L0PXCxlIdASbCSQLHNTc8Kk2ymCU0";
+        const apiKey = process.env.HUBOT_TUMBLR_CONSUMER_KEY;
 
         const requestUrl = uri + '?tag=' + query + '&limit=' + limit + '&api_key=' + apiKey;
         request(requestUrl, (err, response, body) => {
