@@ -38,7 +38,22 @@ module.exports = robot => {
                 }
             }
 
-            msg.send(msg.random(photoPostList));
+            // 返却URLは1つ目固定
+            raw = photoPostList[0];
+
+            // URLの最後のセクションだけURLエンコードかけて返す
+            let splitUrl = raw.split('/');
+
+            const urlTailSection = splitUrl[splitUrl.length - 1];
+            splitUrl.pop();
+
+            let rawUrl = '';
+            for (let section of splitUrl) {
+                rawUrl += section + '/';
+            }
+            const returnUrl = rawUrl + encodeURI(urlTailSection);
+
+            msg.send(returnUrl);
         });
 
     });
