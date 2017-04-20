@@ -49,7 +49,7 @@ module.exports = robot => {
             }
 
             if (photos.length < 1) {
-                msg.send(query + '･･･見つかりませんでしたわ。');
+                msg.send('･･･見つかりませんでしたわ。(2)');
                 return;
             }
 
