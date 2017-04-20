@@ -9,7 +9,7 @@
 const request = require('request');
 
 const uri = 'https://api.tumblr.com/v2/tagged';
-const limit = 5;
+const limit = 20;
 
 module.exports = robot => {
     robot.respond(/(.+)の(絵|イラスト)/i, msg => {
@@ -23,37 +23,37 @@ module.exports = robot => {
                 msg.send('失敗しましたわ･･･。');
                 return;
             }
-            
+
             const arrayContents = JSON.parse(body);
             if (arrayContents.response.length < 1) {
-                msg.send('見つかりませんでしたわ。');
+                msg.send('･･･見つかりませんでしたわ。');
                 return;
             }
 
-            // 画像コンテンツの投稿URLだけリスト化
-            let photoPostList = [];
+            /**
+             * 画像コンテンツの投稿URLだけリスト化
+             */
+            let photos = [];
             for (let content of arrayContents.response) {
-                if (content.type === "photo") {
-                    photoPostList.push(content.post_url);
+                if (content.type !== "photo") {
+                    continue;
+                }
+
+                for (let photo of content.photos) {
+                    let url = photo.original_size.url;
+                    if (url === undefined) {
+                        continue;
+                    }
+                    photos.push(url);
                 }
             }
 
-            // 返却URLは1つ目固定
-            raw = photoPostList[0];
-
-            // URLの最後のセクションだけURLエンコードかけて返す
-            let splitUrl = raw.split('/');
-
-            const urlTailSection = splitUrl[splitUrl.length - 1];
-            splitUrl.pop();
-
-            let rawUrl = '';
-            for (let section of splitUrl) {
-                rawUrl += section + '/';
+            if (photos.length < 1) {
+                msg.send(query + '･･･見つかりませんでしたわ。');
+                return;
             }
-            const returnUrl = rawUrl + encodeURI(urlTailSection);
 
-            msg.send(returnUrl);
+            msg.send(msg.random(photos));
         });
 
     });
