@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# 稼働中のbotを終了
+# pgrep kill {dirname}
+
 cd `dirname $0`
 
 export HUBOT_SLACK_TOKEN={SlackToken}
