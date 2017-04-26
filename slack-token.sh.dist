@@ -1,7 +1,7 @@
 #!/bin/sh
 
 # 稼働中のbotを終了
-# pgrep kill {dirname}
+# pkill -f {dirname}
 
 cd `dirname $0`
 
