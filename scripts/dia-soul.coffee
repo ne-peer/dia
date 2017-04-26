@@ -11,3 +11,6 @@ module.exports = (robot) ->
 
   robot.hear /だいや|ダイヤ/i, (msg) ->
     msg.send msg.random ['なんでしょうか？', '呼びましたか？', '何か聞こえた気がしますわ']
+
+  robot.hear /さよなら/i, (msg) ->
+    msg.send msg.random ['さよならですわ']
