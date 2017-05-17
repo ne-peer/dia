@@ -36,31 +36,31 @@ module.exports = robot => {
 
         let arrayDb = JSON.parse(json);
 
-        let matchIdList = [];
+        let matchList = [];
         for (let hash in arrayDb) {
             let oneIdol = arrayDb[hash];
-            let name = oneIdol.name;
 
             // nameにqueryが含まれていたら追加
+            let name = oneIdol.name;
             if (name.match(query)) {
-                matchIdList.push(oneIdol.id);
+                matchList.push(oneIdol);
             }
         }
 
-        if (matchIdList.length < 1) {
+        if (matchList.length < 1) {
             msg.send('not found');
             return;
         }
 
         // ランダムに1つ取得
-        let id = matchIdList[Math.floor(Math.random() * matchIdList.length)];
+        let idol = matchList[Math.floor(Math.random() * matchList.length)];
 
         // スクレイピング
-        cheerio.fetch(IMAS_CG_DB_SITE + id, function (err, $, res) {
+        cheerio.fetch(IMAS_CG_DB_SITE + idol.id, function (err, $, res) {
             if (!err) {
                 const imgUrl = $(SELECTOR_IMAGE_LINK).attr("content");
 
-                msg.send(imgUrl);
+                msg.send(idol.name + '\n' + imgUrl);
                 return;
             } else {
                 msg.send('失敗しましたわ･･･。(2)\n```' + err + '```');
