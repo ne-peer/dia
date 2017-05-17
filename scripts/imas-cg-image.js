@@ -1,8 +1,9 @@
 /**
  * Description:
+ *   IMAS CG DBから画像と名前を取得
  * 
  * Commands:
- * 
+ *   dia (free word)のカード
  */
 const request = require('request');
 const cheerio = require('cheerio-httpcli');
