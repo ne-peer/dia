@@ -7,8 +7,12 @@
 const request = require('request');
 const cheerio = require('cheerio-httpcli');
 
+// 引き抜く箇所のセレクタ
+const SELECTOR_IMAGE_LINK = 'meta[property="og:image"]';
+
 // imas cg database json
 const IMAS_CG_DB_JSON = 'https://raw.githubusercontent.com/isaisstillalive/imas_cg_hash/master/hash2id.json';
+const IMAS_CG_DB_SITE = 'http://imas.cg.db.n-hokke.com/cards/';
 
 module.exports = robot => {
     robot.respond(/(.+)の(カード)/i, msg => {
@@ -17,8 +21,8 @@ module.exports = robot => {
         // get db json
         request(IMAS_CG_DB_JSON, (err, response, body) => {
             if (err) {
-                console.log(err);
-                msg.send('失敗しましたわ･･･。\n```' + err + '```');
+                msg.send('失敗しましたわ･･･。(1)\n```' + err + '```');
+                return;
             }
 
             // wip
@@ -51,6 +55,17 @@ module.exports = robot => {
         // ランダムに1つ取得
         let id = matchIdList[Math.floor(Math.random() * matchIdList.length)];
 
-        msg.send('http://imas.cg.db.n-hokke.com/cards/' + id);
+        // スクレイピング
+        cheerio.fetch(IMAS_CG_DB_SITE + id, function (err, $, res) {
+            if (!err) {
+                const imgUrl = $(SELECTOR_IMAGE_LINK).attr("content");
+
+                msg.send(imgUrl);
+                return;
+            } else {
+                msg.send('失敗しましたわ･･･。(2)\n```' + err + '```');
+                return;
+            }
+        });
     });
 };
