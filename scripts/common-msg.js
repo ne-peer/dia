@@ -7,7 +7,7 @@
  */
 const request = require('request');
 
-const COMMAND_LIST_JSON = 'https://gist.githubusercontent.com/ne-peer/b055b8efe6265fed22973976f5ed13fc/raw/50921b76e81ef6765ec718a130098d35bf8e80bf/dia_commands.json';
+const COMMAND_LIST_JSON = 'https://gist.githubusercontent.com/ne-peer/b055b8efe6265fed22973976f5ed13fc/raw/dia_commands.json';
 
 module.exports = robot => {
     // get json
@@ -28,7 +28,7 @@ module.exports = robot => {
 
             if (query === '-all') {
                 // 全コマンド一覧作成
-                let summary = COMMAND_LIST_JSON + '\n=== command list ===';
+                let summary = COMMAND_LIST_JSON + '\n=== command list ===\n *command* description';
                 for (let k in commands) {
                     let cm = commands[k];
 
