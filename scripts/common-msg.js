@@ -17,26 +17,42 @@ module.exports = robot => {
             return;
         }
 
+        // コマンドリスト
         const list = JSON.parse(body);
 
         robot.respond(/(.+)$/i, msg => {
             const query = msg.match[1];
             const commands = list.commands;
 
-            let order = null;
-            for (let k in commands) {
-                let command = commands[k];
-                
-                if (query === command.cmd) {
-                    order = command;
-                    break;
-                }
+            let response = '';
 
-                // 存在しないコマンド
-                return;
+            if (query === '-all') {
+                // 全コマンド一覧作成
+                let summary = COMMAND_LIST_JSON + '\n=== command list ===';
+                for (let k in commands) {
+                    let cm = commands[k];
+
+                    summary = summary + '\n *' + cm.cmd + '*  ' + cm.desc;
+                }
+                response = summary;
+            } else {
+                // 指定コマンドのメッセージを返却
+                let order = null;
+                for (let k in commands) {
+                    let command = commands[k];
+
+                    if (query === command.cmd) {
+                        order = command;
+                        break;
+                    }
+
+                    // 存在しないコマンド
+                    return;
+                }
+                response = order.msg;
             }
 
-            msg.send(order.msg);
+            msg.send(response);
         });
     });
 
