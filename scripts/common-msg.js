@@ -7,7 +7,7 @@
  */
 const request = require('request');
 
-const COMMAND_LIST_JSON = 'https://rawgit.com/ne-peer/b055b8efe6265fed22973976f5ed13fc/raw/dia_commands.json';
+const COMMAND_LIST_JSON = 'https://gist.githubusercontent.com/ne-peer/b055b8efe6265fed22973976f5ed13fc/raw/';
 
 module.exports = robot => {
     // get json
