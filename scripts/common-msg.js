@@ -37,18 +37,21 @@ module.exports = robot => {
                 response = summary;
             } else {
                 // 指定コマンドのメッセージを返却
-                let order = null;
+                let order = undefined;
                 for (let k in commands) {
                     let command = commands[k];
 
-                    if (query === command.cmd) {
+                    if (query == command.cmd) {
                         order = command;
                         break;
                     }
+                }
 
+                if (order === undefined) {
                     // 存在しないコマンド
                     return;
                 }
+
                 response = order.msg;
             }
 
