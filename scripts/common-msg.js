@@ -28,11 +28,11 @@ module.exports = robot => {
 
             if (query === '-all') {
                 // 全コマンド一覧作成
-                let summary = COMMAND_LIST_JSON + '\n=== command list ===\n *command* description';
+                let summary = COMMAND_LIST_JSON + '\n=== command list ===\n*command* description';
                 for (let k in commands) {
                     let cm = commands[k];
 
-                    summary = summary + '\n *' + cm.cmd + '*  ' + cm.desc;
+                    summary = summary + '\n*' + cm.cmd + '*  ' + cm.desc;
                 }
                 response = summary;
             } else {
