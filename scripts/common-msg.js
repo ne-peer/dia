@@ -32,7 +32,7 @@ module.exports = robot => {
                 for (let k in commands) {
                     let cm = commands[k];
 
-                    summary = summary + '\n*' + cm.cmd + '*  ' + cm.desc;
+                    summary = summary + '\n`' + cm.cmd + '`  ' + cm.desc;
                 }
                 response = summary;
             } else {
