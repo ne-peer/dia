@@ -18,22 +18,29 @@ module.exports = robot => {
             'sh slack-token.sh'
         ];
 
+        let failureReason = '';
+
         for (let step of updateRecipe) {
-            let isFailure = false;
             exec(step, function (err, stdout, stderr) {
                 if (err) {
-                    msg.send('update failure!\n```' + err + '```');
-                    isFailure = true;
+                    msg.send();
+                    failureReason = err;
                 }
             });
 
-            if (isFailure === true) {
-                // 中断
-                return;
+            if (failureReason.length > 0) {
+                break;
             }
         }
 
-        msg.send('`' + target + '` update success!');
+        let message = '';
+        if (failureReason.length > 0) {
+            message = 'update failure!\n```' + failureReason + '```';
+        } else {
+            message = '`' + target + '` update success!';
+        }
+        
+        msg.send(message);
     });
 
 };
