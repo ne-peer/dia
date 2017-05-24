@@ -13,7 +13,7 @@ module.exports = robot => {
         const target = msg.match[1];
 
         const updateRecipe = [
-            'cd $(cd $(dirname $0) && pwd)/../../../' + target + '/dia',
+            'cd ~/work/hubot/bot/' + target + '/dia',
             'git pull',
             'sh slack-token.sh'
         ];
