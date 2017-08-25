@@ -8,7 +8,7 @@
  */
 
 const request = require('request');
-const uri = 'https://gist.githubusercontent.com/ne-peer/658243d8a0c606a6867e9a041e965b8f/raw/c633f7c7f543650d014d06a14faa8fc30b64811c/zois.yml';
+const uri = 'https://gist.githubusercontent.com/ne-peer/658243d8a0c606a6867e9a041e965b8f/raw/zois.yml';
 let zois = [];
 
 if (!uri) {
