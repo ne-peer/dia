@@ -101,7 +101,9 @@ const scraper = (msg, query) => {
             });
         }, waitTimeMsec);
 
-    }).catch(e => console.log(e));
+    }).catch(e => {
+        msg.send('失敗しましたわ･･･。\n```' + e + '```')
+    });
 };
 
 module.exports = robot => {
