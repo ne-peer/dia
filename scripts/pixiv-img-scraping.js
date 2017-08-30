@@ -36,6 +36,7 @@ const scraper = (msg, query) => {
         // url
         let url = searchUrl + encodeURI(query);
         if (addQualitySuffix === true) {
+            // 検索クエリにお気に入りユーザ数が多いことを示すタグを追記して検索する
             url += encodeURI(' 100user');
         }
 
@@ -50,8 +51,6 @@ const scraper = (msg, query) => {
         _page.property('onConsoleMessage', function (msg) {
             console.log('console: ' + msg);
         });
-
-        let response = [];
 
         // page load waiting
         setTimeout(function () {
