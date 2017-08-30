@@ -1,7 +1,6 @@
 /**
  * Description:
  *   pixiv百科事典スクレイピング
- * 　整形はまだ甘い･･･。
  * 
  * Commands:
  *   dia (free word)って<誰|だれ>
