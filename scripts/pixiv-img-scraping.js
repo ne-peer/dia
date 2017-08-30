@@ -62,13 +62,23 @@ const scraper = (msg, query) => {
             }).then(function (html) {
                 console.log('html load complete.');
 
+                const errHandle = function () {
+                    msg.send(`検索に失敗しましたわ･･･。\n待ち時間をもう少し長く設定してください。現在は${waitTimeMsec}msですわ。`);
+                };
+
                 const $ = cheerio.load(html);
                 const dataItems = $('#js-mount-point-search-result-list').attr('data-items');
+                let resultJson = null;
 
                 try {
-                    const resultJson = JSON.parse(dataItems);
+                    resultJson = JSON.parse(dataItems);
                 } catch (e) {
-                    msg.send(`検索に失敗しましたわ･･･。\n待ち時間をもう少し長く設定してください。現在は${waitTimeMsec}msですわ。`);
+                    errHandle();
+                    return;
+                }
+
+                if (resultJson === null) {
+                    errHandle();
                     return;
                 }
 
