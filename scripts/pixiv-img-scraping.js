@@ -9,7 +9,7 @@ const phantom = require('phantom');
 const cheerio = require('cheerio');
 
 // Phantom settings
-const waitTimeMsec = 10000;
+const waitTimeMsec = 30000;
 const ua = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36';
 
 // Serach settings
@@ -67,7 +67,7 @@ const scraper = (msg, query) => {
             return new Promise(function (resolve, reject) {
                 let dataItems = [];
 
-                // 取得できるまでループ
+                // 取得できるまでevaluateループ
                 while (dataItems.length < 1) {
                     dataItems = _page.evaluate(function () {
                         return document.querySelector('html').innerHTML;
@@ -83,8 +83,9 @@ const scraper = (msg, query) => {
             });
         };
 
-        // 実行: タイムアウトタイマーとスクレイピングを並行処理
+        // 実行
         Promise.race([
+            // タイムアウトタイマーとスクレイピングを並行処理
             timeoutTimer(),
             selectorFetchLoop()
         ]).then(function (dataItems) {
