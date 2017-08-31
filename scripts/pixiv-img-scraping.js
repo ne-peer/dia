@@ -9,7 +9,7 @@ const phantom = require('phantom');
 const cheerio = require('cheerio');
 
 // Phantom settings
-const waitTimeMsec = 30000;
+const timeoutMsec = 30000;
 const ua = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.71 Safari/537.36';
 
 // Serach settings
@@ -57,8 +57,8 @@ const scraper = (msg, query) => {
         const timeoutTimer = function () {
             return new Promise(function (resolve, reject) {
                 setTimeout(function () {
-                    Promise.reject(new Error('Html load timeouted. Wait time = ' + waitTimeMsec + 'ms.'));
-                }, waitTimeMsec);
+                    Promise.reject(new Error('Html load timeouted. Wait time = ' + timeoutMsec + 'ms.'));
+                }, timeoutMsec);
             });
         }
 
@@ -110,17 +110,17 @@ const scraper = (msg, query) => {
                 console.log('ok');
                 msg.send('これですわ！\n' + msg.random(links));
             } else {
-                console.log('ng');
+                console.log('result is not exist');
                 msg.send('見つかりませんでしたわ･･･。');
             }
         }).catch(function (e) {
             // aborted
-            msg.send('検索に失敗しましたわ･･･。(1)\n```' + e + '```');
+            msg.send('検索に失敗しましたわ･･･。(2)\n```' + e + '```');
         });
 
     }).catch(e => {
         // exception
-        msg.send('検索に失敗しましたわ･･･。(2)\n```' + e + '```');
+        msg.send('失敗しましたわ･･･。(1)\n```' + e + '```');
     });
     
     return;
