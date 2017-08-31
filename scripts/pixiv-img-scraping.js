@@ -68,7 +68,7 @@ const scraper = (msg, query) => {
                 let dataItems = [];
 
                 // 取得できるまでevaluateループ
-                while (dataItems.length < 1) {
+                while (dataItems.length < 1 || dataItems === undefined) {
                     dataItems = _page.evaluate(function () {
                         return document.querySelector('html').innerHTML;
                     }).then(function (html) {
@@ -92,7 +92,7 @@ const scraper = (msg, query) => {
             try {
                 resultJson = JSON.parse(dataItems);
             } catch (e) {
-                reject(new Error('Invalid json.'));
+                throw new Error('Invalid json. ' + dataItems);
             }
 
             const links = [];
@@ -107,22 +107,23 @@ const scraper = (msg, query) => {
             _ph.exit();
 
             if (links.length > 0) {
+                console.log('ok');
                 msg.send('これですわ！\n' + msg.random(links));
             } else {
+                console.log('ng');
                 msg.send('見つかりませんでしたわ･･･。');
             }
-
-            // terminated
-            process.exit(0);
         }).catch(function (e) {
-            console.log(e);
+            // aborted
+            msg.send('検索に失敗しましたわ･･･。(1)\n```' + e + '```');
         });
 
     }).catch(e => {
-    	// aborted
-        msg.send('検索に失敗しましたわ･･･。\n```' + e + '```')
-        process.exit(1);
+        // exception
+        msg.send('検索に失敗しましたわ･･･。(2)\n```' + e + '```');
     });
+    
+    return;
 };
 
 module.exports = robot => {
