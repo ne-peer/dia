@@ -45,63 +45,82 @@ const scraper = (msg, query) => {
 
         return _page.open(url);
     }).then(status => {
-        console.log(status);
-
         // console log setup
         _page.property('onConsoleMessage', function (msg) {
-            console.log('console: ' + msg);
+            console.log('console: ', msg);
         });
 
-        // page load waiting
-        setTimeout(function () {
+        // site open status logging
+        console.log('Opened url?: ', status);
 
-            // main scraping
-            _page.evaluate(function () {
-                return document.querySelector('html').innerHTML;
-            }).then(function (html) {
-                console.log('html load complete.');
-
-                const errHandle = function () {
-                    msg.send(`検索に失敗しましたわ･･･。\n待ち時間をもう少し長く設定してください。現在は${waitTimeMsec}msですわ。`);
-                };
-
-                const $ = cheerio.load(html);
-                const dataItems = $('#js-mount-point-search-result-list').attr('data-items');
-                let resultJson = null;
-
-                try {
-                    resultJson = JSON.parse(dataItems);
-                } catch (e) {
-                    errHandle();
-                    return;
-                }
-
-                if (resultJson === null) {
-                    errHandle();
-                    return;
-                }
-
-                const links = [];
-                for (let key in resultJson) {
-                    const url = responseBaseUrl + resultJson[key]['illustId']
-                    links.push(url);
-                }
-
-                console.log(links);
-
-                _page.close();
-                _ph.exit();
-
-                if (links.length > 0) {
-                    msg.send('これですわ！\n' + msg.random(links));
-                } else {
-                    msg.send('見つかりませんでしたわ･･･。');
-                }
+        // timeout promise
+        const timeoutTimer = function () {
+            return new Promise(function (resolve, reject) {
+                setTimeout(function () {
+                    reject(new Error('Page load timeouted. Wait time = ' + waitTimeMsec + 'ms.'));
+                }, waitTimeMsec);
+            }).catch(function(e) {
+                reject(e);
             });
-        }, waitTimeMsec);
+        }
 
+        // scraping loop promise
+        const selectorFetchLoop = function () {
+            return new Promise(function (resolve, reject) {
+                let dataItems = [];
+
+                // 取得できるまでループ
+                while (dataItems.length < 1) {
+                    dataItems = _page.evaluate(function () {
+                        return document.querySelector('html').innerHTML;
+                    }).then(function (html) {
+                        const $ = cheerio.load(html);
+                        return $('#js-mount-point-search-result-list').attr('data-items');
+                    }).catch(function(e) {
+                        console.log('Failure selecting.', e);
+                    });
+
+                    console.log(dataItems);
+                }
+
+                resolve(dataItems);
+            });
+        };
+
+        // 実行: タイムアウトタイマーとスクレイピングを並行処理
+        Promise.race([
+            timeoutTimer(),
+            selectorFetchLoop()
+        ]).then(function (dataItems) {
+            try {
+                resultJson = JSON.parse(dataItems);
+            } catch (e) {
+                reject(new Error('Invalid json.'));
+            }
+
+            const links = [];
+            for (let key in resultJson) {
+                const url = responseBaseUrl + resultJson[key]['illustId']
+                links.push(url);
+            }
+
+            console.log(links);
+
+            _page.close();
+            _ph.exit();
+
+            if (links.length > 0) {
+                msg.send('これですわ！\n' + msg.random(links));
+            } else {
+                msg.send('見つかりませんでしたわ･･･。');
+            }
+
+            resolve();
+        }).catch(function (e) {
+            reject(e);
+        });
     }).catch(e => {
-        msg.send('失敗しましたわ･･･。\n```' + e + '```')
+        msg.send('検索に失敗しましたわ･･･。\n```' + e + '```')
     });
 };
 
