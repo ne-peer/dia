@@ -57,10 +57,8 @@ const scraper = (msg, query) => {
         const timeoutTimer = function () {
             return new Promise(function (resolve, reject) {
                 setTimeout(function () {
-                    reject(new Error('Page load timeouted. Wait time = ' + waitTimeMsec + 'ms.'));
+                    Promise.reject(new Error('Html load timeouted. Wait time = ' + waitTimeMsec + 'ms.'));
                 }, waitTimeMsec);
-            }).catch(function(e) {
-                reject(e);
             });
         }
 
@@ -77,10 +75,8 @@ const scraper = (msg, query) => {
                         const $ = cheerio.load(html);
                         return $('#js-mount-point-search-result-list').attr('data-items');
                     }).catch(function(e) {
-                        console.log('Failure selecting.', e);
+                        console.log('Is not matches for selector.', e);
                     });
-
-                    console.log(dataItems);
                 }
 
                 resolve(dataItems);
@@ -115,12 +111,16 @@ const scraper = (msg, query) => {
                 msg.send('見つかりませんでしたわ･･･。');
             }
 
-            resolve();
+            // terminated
+            process.exit(0);
         }).catch(function (e) {
-            reject(e);
+            console.log(e);
         });
+
     }).catch(e => {
+    	// aborted
         msg.send('検索に失敗しましたわ･･･。\n```' + e + '```')
+        process.exit(1);
     });
 };
 
