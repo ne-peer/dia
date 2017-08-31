@@ -68,7 +68,7 @@ const scraper = (msg, query) => {
                 let dataItems = [];
 
                 // 取得できるまでevaluateループ
-                while (dataItems.length < 1 || dataItems === undefined) {
+                while (dataItems.length < 1 || typeof dataItems === "undefined") {
                     dataItems = _page.evaluate(function () {
                         return document.querySelector('html').innerHTML;
                     }).then(function (html) {
