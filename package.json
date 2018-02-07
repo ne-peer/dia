@@ -5,6 +5,7 @@
   "author": "ne-peer <mileage0110@gmail.com>",
   "description": "A simple helpful robot for your Company",
   "dependencies": {
+    "cheerio": "^1.0.0-rc.2",
     "cheerio-httpcli": "^0.6.11",
     "hubot": "^2.19.0",
     "hubot-diagnostics": "0.0.1",
@@ -19,9 +20,9 @@
     "hubot-scripts": "^2.17.2",
     "hubot-shipit": "^0.2.0",
     "hubot-slack": "^4.3.4",
-    "request": "^2.81.0",
-    "cheerio": "^1.0.0-rc.2",
-    "phantom": "^4.0.5"
+    "phantom": "^4.0.5",
+    "puppeteer": "^1.0.0",
+    "request": "^2.81.0"
   },
   "engines": {
     "node": "0.10.x"
