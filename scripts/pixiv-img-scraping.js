@@ -23,7 +23,7 @@ const crawler = async keyword => {
 
     // 検索実行
     await page.goto(searchUrl + keyword);
-    const html = await page.$eval('html', elem => { return elem.innerHTML });
+    const html = await page.$eval('html', elem => elem.innerHTML);
     await browser.close();
 
     return html;
