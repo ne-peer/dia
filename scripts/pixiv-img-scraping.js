@@ -37,9 +37,7 @@ const crawler = async keyword => {
 const scraper = async html => {
     const $ = cheerio.load(html);
     const json = $('#js-mount-point-search-result-list').attr('data-items');
-    return JSON.parse(json).map(obj => {
-        return decoUrl + obj['illustId'];
-    });
+    return JSON.parse(json).map(obj => decoUrl + obj['illustId']);
 }
 
 module.exports = robot => {
