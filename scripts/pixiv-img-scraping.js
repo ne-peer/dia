@@ -18,7 +18,8 @@ const decoUrl = 'http://embed.pixiv.net/decorate.php?illust_id=';
  * @param {string} keyword 検索ワード
  */
 const crawler = async keyword => {
-    const browser = await puppeteer.launch();
+    // "--no-sandbox"で実行: https://github.com/GoogleChrome/puppeteer/issues/290
+    const browser = await puppeteer.launch({args: ['--no-sandbox']});
     const page = await browser.newPage();
 
     // 検索実行
