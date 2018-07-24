@@ -1,7 +1,7 @@
 /**
  * Description:
  *   Search images on pixiv.net
- * 
+ *
  * Commands:
  *   @botname <かわいい>keyword
  */
@@ -14,7 +14,7 @@ const decoUrl = 'http://embed.pixiv.net/decorate.php?illust_id=';
 
 /**
  * クローラ
- * 
+ *
  * @param {string} keyword 検索ワード
  */
 const crawler = async keyword => {
@@ -32,7 +32,7 @@ const crawler = async keyword => {
 
 /**
  * スクレイピング
- * 
+ *
  * @param {string} html
  */
 const scraper = async html => {
@@ -44,7 +44,7 @@ const scraper = async html => {
 module.exports = robot => {
     robot.respond(/(かわいい)(.+)/i, msg => {
         (async () => {
-            const query = await msg.match[2] + ' 1000user';
+            const query = await msg.match[2];
             await msg.send(`${query}を探していますわ...`);
             const html = await crawler(query);
             const links = await scraper(html);
