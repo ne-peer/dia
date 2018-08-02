@@ -1,13 +1,13 @@
 /**
  * Description:
  *   汎用的なメッセージ返却
- * 
+ *
  * Commands:
  *   -
  */
 const request = require('request');
 
-const COMMAND_LIST_JSON = 'https://gist.githubusercontent.com/ne-peer/b055b8efe6265fed22973976f5ed13fc/raw/';
+const COMMAND_LIST_JSON = 'https://cdn.rawgit.com/ne-peer/b055b8efe6265fed22973976f5ed13fc/raw/dia_commands.json';
 
 module.exports = robot => {
     // get json
