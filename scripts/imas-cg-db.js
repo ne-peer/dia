@@ -10,6 +10,7 @@ const request = require("request");
 
 // starlgith api
 const STARLIGHT_CHAR_API = "https://starlight.kirara.ca/api/v1/list/char_t";
+const STARLIGHT_CARD_API = "https://starlight.kirara.ca/api/v1/card_t";
 const STARLIGHT_IMG_HOST = "https://truecolor.kirara.ca";
 
 /**
@@ -19,15 +20,6 @@ const STARLIGHT_IMG_HOST = "https://truecolor.kirara.ca";
  */
 const getRandomMatchId = list => {
   return list[Math.floor(Math.random() * list.length)];
-};
-
-/**
- * カードIDを指定して画像URLを取得
- *
- * @param {int} id
- */
-const getImageUrl = id => {
-  return STARLIGHT_IMG_HOST + `/spread/${id}.png`;
 };
 
 /**
@@ -43,6 +35,20 @@ const fetch = url => {
       }
       resolve(JSON.parse(body));
     });
+  });
+};
+
+/**
+ * カードIDを指定して画像URLを取得
+ *
+ * @param {int} id
+ */
+const getImageUrl = id => {
+  return new Promise(resolve => {
+    const url = STARLIGHT_CARD_API + `/${id}`;
+    const card = await fetch(url);
+    const imgUrl = card.sprite_image_ref;
+    resolve(imgUrl);
   });
 };
 
