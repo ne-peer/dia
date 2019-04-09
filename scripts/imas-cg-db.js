@@ -43,13 +43,13 @@ const fetch = url => {
  *
  * @param {int} id
  */
-const getImageUrl = id => {
-  return new Promise(resolve => {
-    const url = STARLIGHT_CARD_API + `/${id}`;
-    const card = await fetch(url);
-    const imgUrl = card.sprite_image_ref;
-    resolve(imgUrl);
-  });
+async function getImageUrl(id) {
+  const url = STARLIGHT_CARD_API + `/${id}`;
+  const response = await fetch(url);
+  const card = await response.result[0];
+
+  const imgUrl = await card.sprite_image_ref;
+  return await imgUrl;
 };
 
 module.exports = robot => {
@@ -79,7 +79,7 @@ module.exports = robot => {
       const pickedCard = getRandomMatchId(cards);
 
       // 画像URL
-      const url = getImageUrl(pickedCard);
+      const url = await getImageUrl(pickedCard);
 
       msg.send("これですわ！\n" + url);
     })();
