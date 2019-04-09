@@ -10,7 +10,7 @@ const request = require("request");
 
 // starlgith api
 const STARLIGHT_CHAR_API = "https://starlight.kirara.ca/api/v1/list/char_t";
-const STARLIGHT_IMG_HOST = "https://truecolor.kirara.ca";
+const STARLIGHT_CARD_API = "https://starlight.kirara.ca/api/v1/card_t";
 
 /**
  * 配列からランダムな要素を取得
@@ -19,15 +19,6 @@ const STARLIGHT_IMG_HOST = "https://truecolor.kirara.ca";
  */
 const getRandomMatchId = list => {
   return list[Math.floor(Math.random() * list.length)];
-};
-
-/**
- * カードIDを指定して画像URLを取得
- *
- * @param {int} id
- */
-const getImageUrl = id => {
-  return STARLIGHT_IMG_HOST + `/spread/${id}.png`;
 };
 
 /**
@@ -44,6 +35,20 @@ const fetch = url => {
       resolve(JSON.parse(body));
     });
   });
+};
+
+/**
+ * カードIDを指定して画像URLを取得
+ *
+ * @param {int} id
+ */
+async function getImageUrl(id) {
+  const url = STARLIGHT_CARD_API + `/${id}`;
+  const response = await fetch(url);
+  const card = await response.result[0];
+
+  const imgUrl = await card.sprite_image_ref;
+  return await imgUrl;
 };
 
 module.exports = robot => {
@@ -73,7 +78,7 @@ module.exports = robot => {
       const pickedCard = getRandomMatchId(cards);
 
       // 画像URL
-      const url = getImageUrl(pickedCard);
+      const url = await getImageUrl(pickedCard);
 
       msg.send("これですわ！\n" + url);
     })();
