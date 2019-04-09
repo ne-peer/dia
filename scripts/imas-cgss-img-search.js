@@ -11,7 +11,6 @@ const request = require("request");
 // starlgith api
 const STARLIGHT_CHAR_API = "https://starlight.kirara.ca/api/v1/list/char_t";
 const STARLIGHT_CARD_API = "https://starlight.kirara.ca/api/v1/card_t";
-const STARLIGHT_IMG_HOST = "https://truecolor.kirara.ca";
 
 /**
  * 配列からランダムな要素を取得
