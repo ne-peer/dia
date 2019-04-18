@@ -47,7 +47,7 @@ async function getImageUrl(id) {
   const response = await fetch(url);
   const card = await response.result[0];
 
-  const imgUrl = await card.sprite_image_ref;
+  const imgUrl = await card.card_image_ref;
   return await imgUrl;
 };
 
